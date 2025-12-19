@@ -1,0 +1,984 @@
+{% extends "base.html" %}
+
+{% block title %}Space Explorer - OrbitWell{% endblock %}
+
+{% block content %}
+<div class="cosmic-container">
+    <!-- Explorer Hero Section -->
+    <section class="explorer-hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Space Explorer</h1>
+            <p class="hero-subtitle">Discover the wonders of our universe</p>
+            <button id="random-fact-btn" class="cosmic-btn">
+                <i class="fas fa-star"></i> Show Random Fact
+            </button>
+        </div>
+        <div class="hero-stars">
+            <div class="star" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="star" style="top: 40%; left: 80%; animation-delay: 1s;"></div>
+            <div class="star" style="top: 60%; left: 30%; animation-delay: 2s;"></div>
+            <div class="star" style="top: 80%; left: 70%; animation-delay: 0.5s;"></div>
+        </div>
+    </section>
+
+    <!-- Planets Grid -->
+    <section class="planets-section">
+        <h2 class="section-title">Explore Our Solar System</h2>
+        <div class="planets-grid">
+            <div class="planet-card mercury" onclick="showPlanetModal('mercury')">
+                <div class="planet-image">
+                    <img src="{{ url_for('static', filename='img/planets/mercury.jpg') }}" alt="Mercury">
+                </div>
+                <div class="planet-info">
+                    <h3>Mercury</h3>
+                    <p>The smallest planet, closest to the Sun</p>
+                    <div class="planet-stats">
+                        <span>Distance: 57.9M km</span>
+                        <span>Temp: -173°C to 427°C</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="planet-card venus" onclick="showPlanetModal('venus')">
+                <div class="planet-image">
+                    <img src="{{ url_for('static', filename='img/planets/venus.jpg') }}" alt="Venus">
+                </div>
+                <div class="planet-info">
+                    <h3>Venus</h3>
+                    <p>The hottest planet with thick toxic atmosphere</p>
+                    <div class="planet-stats">
+                        <span>Distance: 108.2M km</span>
+                        <span>Temp: 462°C</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="planet-card earth" onclick="showPlanetModal('earth')">
+                <div class="planet-image">
+                    <img src="{{ url_for('static', filename='img/planets/earth.jpg') }}" alt="Earth">
+                </div>
+                <div class="planet-info">
+                    <h3>Earth</h3>
+                    <p>Our home planet, the only known world with life</p>
+                    <div class="planet-stats">
+                        <span>Distance: 149.6M km</span>
+                        <span>Temp: -89°C to 58°C</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="planet-card mars" onclick="showPlanetModal('mars')">
+                <div class="planet-image">
+                    <img src="{{ url_for('static', filename='img/planets/mars.jpg') }}" alt="Mars">
+                </div>
+                <div class="planet-info">
+                    <h3>Mars</h3>
+                    <p>The Red Planet with the largest volcano in the solar system</p>
+                    <div class="planet-stats">
+                        <span>Distance: 227.9M km</span>
+                        <span>Temp: -87°C to -5°C</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="planet-card jupiter" onclick="showPlanetModal('jupiter')">
+                <div class="planet-image">
+                    <img src="{{ url_for('static', filename='img/planets/jupiter.jpg') }}" alt="Jupiter">
+                </div>
+                <div class="planet-info">
+                    <h3>Jupiter</h3>
+                    <p>The gas giant king with the Great Red Spot storm</p>
+                    <div class="planet-stats">
+                        <span>Distance: 778.5M km</span>
+                        <span>Temp: -108°C</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="planet-card saturn" onclick="showPlanetModal('saturn')">
+                <div class="planet-image">
+                    <img src="{{ url_for('static', filename='img/planets/saturn.jpg') }}" alt="Saturn">
+                </div>
+                <div class="planet-info">
+                    <h3>Saturn</h3>
+                    <p>The ringed planet, less dense than water</p>
+                    <div class="planet-stats">
+                        <span>Distance: 1.43B km</span>
+                        <span>Temp: -139°C</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="planet-card uranus" onclick="showPlanetModal('uranus')">
+                <div class="planet-image">
+                    <img src="{{ url_for('static', filename='img/planets/uranus.jpg') }}" alt="Uranus">
+                </div>
+                <div class="planet-info">
+                    <h3>Uranus</h3>
+                    <p>The ice giant that rotates on its side</p>
+                    <div class="planet-stats">
+                        <span>Distance: 2.87B km</span>
+                        <span>Temp: -197°C</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="planet-card neptune" onclick="showPlanetModal('neptune')">
+                <div class="planet-image">
+                    <img src="{{ url_for('static', filename='img/planets/neptune.jpg') }}" alt="Neptune">
+                </div>
+                <div class="planet-info">
+                    <h3>Neptune</h3>
+                    <p>The distant ice giant with supersonic winds</p>
+                    <div class="planet-stats">
+                        <span>Distance: 4.50B km</span>
+                        <span>Temp: -201°C</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Knowledge Section -->
+    <section class="knowledge-section">
+        <h2 class="section-title">Space Knowledge Base</h2>
+        <div class="knowledge-grid">
+            <div class="knowledge-card" onclick="showKnowledgeModal('black_hole')">
+                <div class="card-icon">
+                    <i class="fas fa-circle"></i>
+                </div>
+                <h3>Black Holes</h3>
+                <p>Regions of spacetime where gravity is so strong that nothing can escape.</p>
+            </div>
+
+            <div class="knowledge-card" onclick="showKnowledgeModal('nebula')">
+                <div class="card-icon">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <h3>Nebulae</h3>
+                <p>Giant clouds of gas and dust where stars are born.</p>
+            </div>
+
+            <div class="knowledge-card" onclick="showKnowledgeModal('star_life_cycle')">
+                <div class="card-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3>Star Life Cycle</h3>
+                <p>The birth, life, and death of stars in the universe.</p>
+            </div>
+
+            <div class="knowledge-card" onclick="showKnowledgeModal('milky_way')">
+                <div class="card-icon">
+                    <i class="fas fa-galaxy"></i>
+                </div>
+                <h3>Milky Way</h3>
+                <p>Our home galaxy containing billions of stars and planets.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Planet Modal -->
+<div id="planet-modal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <img id="modal-planet-image" src="" alt="Planet">
+            <div class="modal-info">
+                <h2 id="modal-planet-title"></h2>
+                <p id="modal-planet-description"></p>
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="planet-details">
+                <div class="detail-item">
+                    <span class="detail-label">Distance from Sun:</span>
+                    <span id="modal-distance" class="detail-value"></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Diameter:</span>
+                    <span id="modal-diameter" class="detail-value"></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Surface Temperature:</span>
+                    <span id="modal-temperature" class="detail-value"></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Day Length:</span>
+                    <span id="modal-day-length" class="detail-value"></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Year Length:</span>
+                    <span id="modal-year-length" class="detail-value"></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Moons:</span>
+                    <span id="modal-moons" class="detail-value"></span>
+                </div>
+            </div>
+            <div class="planet-facts">
+                <h3>Interesting Facts</h3>
+                <ul id="modal-facts-list"></ul>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button onclick="closePlanetModal()" class="modal-close-btn">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Knowledge Modal -->
+<div id="knowledge-modal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header knowledge-header">
+            <div class="knowledge-icon">
+                <i id="knowledge-modal-icon" class="fas"></i>
+            </div>
+            <div class="modal-info">
+                <h2 id="knowledge-modal-title"></h2>
+            </div>
+        </div>
+        <div class="modal-content">
+            <p id="knowledge-modal-content"></p>
+        </div>
+        <div class="modal-actions">
+            <button onclick="closeKnowledgeModal()" class="modal-close-btn">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Fact Card -->
+<div id="floating-fact-card" class="floating-fact-card">
+    <div class="fact-icon">🚀</div>
+    <div class="fact-content">
+        <p id="fact-text"></p>
+    </div>
+    <button onclick="closeFactCard()" class="fact-close-btn">×</button>
+</div>
+
+<style>
+.cosmic-container {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Explorer Hero */
+.explorer-hero {
+    position: relative;
+    text-align: center;
+    padding: 4rem 2rem;
+    margin-bottom: 4rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    font-size: 4rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 30px rgba(123, 104, 238, 0.8);
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: #cdd9ff;
+    margin-bottom: 2rem;
+}
+
+.hero-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #ffffff;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+}
+
+/* Planets Grid */
+.planets-section {
+    margin-bottom: 4rem;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 3rem;
+    text-shadow: 0 0 20px rgba(123, 104, 238, 0.5);
+}
+
+.planets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.planet-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.planet-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(123, 104, 238, 0.5);
+    box-shadow: 0 20px 40px rgba(123, 104, 238, 0.3);
+}
+
+.planet-card.mercury {
+    border-color: rgba(184, 134, 11, 0.5);
+}
+
+.planet-card.venus {
+    border-color: rgba(255, 193, 7, 0.5);
+}
+
+.planet-card.earth {
+    border-color: rgba(76, 175, 80, 0.5);
+}
+
+.planet-card.mars {
+    border-color: rgba(244, 67, 54, 0.5);
+}
+
+.planet-card.jupiter {
+    border-color: rgba(255, 152, 0, 0.5);
+}
+
+.planet-card.saturn {
+    border-color: rgba(255, 235, 59, 0.5);
+}
+
+.planet-card.uranus {
+    border-color: rgba(0, 188, 212, 0.5);
+}
+
+.planet-card.neptune {
+    border-color: rgba(63, 81, 181, 0.5);
+}
+
+.planet-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.planet-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.planet-card:hover .planet-image img {
+    transform: scale(1.1);
+}
+
+.planet-info {
+    padding: 1.5rem;
+}
+
+.planet-info h3 {
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.planet-info p {
+    color: #cdd9ff;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.planet-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.planet-stats span {
+    font-size: 0.85rem;
+    color: #8892a8;
+}
+
+/* Knowledge Section */
+.knowledge-section {
+    margin-bottom: 4rem;
+}
+
+.knowledge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.knowledge-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.knowledge-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(123, 104, 238, 0.3);
+    box-shadow: 0 15px 30px rgba(123, 104, 238, 0.2);
+}
+
+.card-icon {
+    font-size: 3rem;
+    color: #7b68ee;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 15px rgba(123, 104, 238, 0.6);
+}
+
+.knowledge-card h3 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.knowledge-card p {
+    color: #cdd9ff;
+    line-height: 1.5;
+}
+
+/* Modals */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-container {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(123, 104, 238, 0.5);
+}
+
+.knowledge-header {
+    justify-content: center;
+}
+
+.knowledge-icon {
+    font-size: 4rem;
+    color: #7b68ee;
+    text-shadow: 0 0 20px rgba(123, 104, 238, 0.6);
+}
+
+.modal-info h2 {
+    color: #ffffff;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.modal-info p {
+    color: #cdd9ff;
+    line-height: 1.6;
+}
+
+.modal-content {
+    padding: 2rem;
+}
+
+.planet-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.detail-label {
+    color: #8892a8;
+    font-weight: 500;
+}
+
+.detail-value {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.planet-facts h3 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.planet-facts ul {
+    list-style: none;
+    padding: 0;
+}
+
+.planet-facts li {
+    color: #cdd9ff;
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.5;
+}
+
+.planet-facts li::before {
+    content: "✨";
+    position: absolute;
+    left: 0;
+    color: #7b68ee;
+}
+
+.modal-actions {
+    padding: 1rem 2rem 2rem;
+    text-align: center;
+}
+
+.modal-close-btn {
+    padding: 0.75rem 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.modal-close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Floating Fact Card */
+.floating-fact-card {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 350px;
+    display: none;
+    z-index: 999;
+    backdrop-filter: blur(10px);
+}
+
+.fact-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.fact-content p {
+    color: #ffffff;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.fact-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #8892a8;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fact-close-btn:hover {
+    color: #ffffff;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .planets-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .planet-details {
+        grid-template-columns: 1fr;
+    }
+
+    .floating-fact-card {
+        left: 20px;
+        right: 20px;
+        max-width: none;
+    }
+}
+</style>
+
+<script>
+// Planet data
+const planetData = {
+    mercury: {
+        title: "Mercury",
+        description: "The smallest planet in our solar system and the closest to the Sun.",
+        distance: "57.9 million km",
+        diameter: "4,879 km",
+        temperature: "-173°C to 427°C",
+        dayLength: "58.6 Earth days",
+        yearLength: "88 Earth days",
+        moons: "0",
+        facts: [
+            "Mercury has no atmosphere, so it experiences extreme temperature swings.",
+            "A day on Mercury (sunrise to sunrise) takes 176 Earth days.",
+            "Mercury's surface is covered in craters from meteor impacts.",
+            "It's the second densest planet in our solar system."
+        ]
+    },
+    venus: {
+        title: "Venus",
+        description: "The hottest planet with a thick, toxic atmosphere of carbon dioxide.",
+        distance: "108.2 million km",
+        diameter: "12,104 km",
+        temperature: "462°C",
+        dayLength: "243 Earth days",
+        yearLength: "225 Earth days",
+        moons: "0",
+        facts: [
+            "Venus rotates backwards compared to most planets.",
+            "Its atmosphere is 96% carbon dioxide, creating a runaway greenhouse effect.",
+            "Surface pressure is 92 times that of Earth.",
+            "Venus is often called Earth's twin due to similar size."
+        ]
+    },
+    earth: {
+        title: "Earth",
+        description: "Our home planet, the only known world with life and liquid water.",
+        distance: "149.6 million km",
+        diameter: "12,756 km",
+        temperature: "-89°C to 58°C",
+        dayLength: "24 hours",
+        yearLength: "365.25 days",
+        moons: "1 (The Moon)",
+        facts: [
+            "Earth is the only planet known to harbor life.",
+            "71% of Earth's surface is covered by water.",
+            "Earth has a protective magnetic field that shields us from solar radiation.",
+            "Our planet is about 4.54 billion years old."
+        ]
+    },
+    mars: {
+        title: "Mars",
+        description: "The Red Planet with the largest volcano and deepest canyon in the solar system.",
+        distance: "227.9 million km",
+        diameter: "6,792 km",
+        temperature: "-87°C to -5°C",
+        dayLength: "24.6 hours",
+        yearLength: "687 Earth days",
+        moons: "2 (Phobos, Deimos)",
+        facts: [
+            "Mars has the largest volcano in the solar system: Olympus Mons.",
+            "Valles Marineris is a canyon system that could span the entire United States.",
+            "Evidence suggests Mars once had flowing water.",
+            "Mars has seasons like Earth, but they last twice as long."
+        ]
+    },
+    jupiter: {
+        title: "Jupiter",
+        description: "The gas giant king of planets, more than twice as massive as all other planets combined.",
+        distance: "778.5 million km",
+        diameter: "142,984 km",
+        temperature: "-108°C",
+        dayLength: "9.9 hours",
+        yearLength: "11.9 Earth years",
+        moons: "95+ (including the four Galilean moons)",
+        facts: [
+            "Jupiter's Great Red Spot is a massive storm larger than Earth.",
+            "Jupiter acts as a cosmic vacuum cleaner, protecting inner planets from asteroids.",
+            "The planet's mass is 2.5 times that of all other planets combined.",
+            "Jupiter has a faint ring system discovered in 1979."
+        ]
+    },
+    saturn: {
+        title: "Saturn",
+        description: "The ringed planet with a complex system of icy rings made of countless particles.",
+        distance: "1.43 billion km",
+        diameter: "120,536 km",
+        temperature: "-139°C",
+        dayLength: "10.7 hours",
+        yearLength: "29.5 Earth years",
+        moons: "146+ (including Titan and Enceladus)",
+        facts: [
+            "Saturn's rings are made of ice and rock particles.",
+            "Despite its size, Saturn is less dense than water and would float.",
+            "Saturn has a hexagonal storm at its north pole.",
+            "The planet's moon Titan has a thick atmosphere."
+        ]
+    },
+    uranus: {
+        title: "Uranus",
+        description: "The ice giant that rotates on its side with an extreme axial tilt.",
+        distance: "2.87 billion km",
+        diameter: "51,118 km",
+        temperature: "-197°C",
+        dayLength: "17.2 hours",
+        yearLength: "84 Earth years",
+        moons: "28",
+        facts: [
+            "Uranus rotates on its side with a 98-degree axial tilt.",
+            "The planet's blue-green color comes from methane in its atmosphere.",
+            "Uranus has faint rings discovered in 1977.",
+            "It was the first planet discovered using a telescope."
+        ]
+    },
+    neptune: {
+        title: "Neptune",
+        description: "The distant ice giant with the strongest winds in the solar system.",
+        distance: "4.50 billion km",
+        diameter: "49,528 km",
+        temperature: "-201°C",
+        dayLength: "16.1 hours",
+        yearLength: "165 Earth years",
+        moons: "16",
+        facts: [
+            "Neptune has the strongest winds in the solar system, reaching 2,100 km/h.",
+            "The planet was discovered through mathematical predictions before being observed.",
+            "Neptune's moon Triton orbits backwards compared to the planet's rotation.",
+            "The planet's deep blue color comes from methane in its atmosphere."
+        ]
+    }
+};
+
+// Knowledge data
+const knowledgeData = {
+    black_hole: {
+        title: "Black Holes",
+        icon: "fa-circle",
+        content: "A black hole is a region of spacetime where gravity is so strong that nothing—no particles or even electromagnetic radiation such as light—can escape from it. They form when massive stars collapse under their own gravity at the end of their life cycle. The boundary surrounding a black hole is called the event horizon, beyond which no information can escape. At the center lies a singularity where matter is compressed to infinite density."
+    },
+    nebula: {
+        title: "Nebulae",
+        icon: "fa-cloud",
+        content: "Nebulae are giant clouds of gas and dust in space where stars are born. These cosmic nurseries contain the raw materials needed for star formation. Emission nebulas glow due to ultraviolet light from hot stars, reflection nebulas scatter starlight, and dark nebulas block background light. The famous Orion Nebula is a stellar nursery about 1,344 light-years from Earth."
+    },
+    star_life_cycle: {
+        title: "Star Life Cycle",
+        icon: "fa-star",
+        content: "Stars form from collapsing gas clouds, burn hydrogen through nuclear fusion, and evolve through different phases depending on their mass. Low-mass stars like our Sun become red giants, then white dwarfs. Massive stars live fast and die explosively as supernovas, leaving behind neutron stars or black holes. The most massive stars may collapse directly into black holes without a supernova explosion."
+    },
+    milky_way: {
+        title: "Milky Way Galaxy",
+        icon: "fa-galaxy",
+        content: "The Milky Way is a barred spiral galaxy containing 100-400 billion stars, including our Sun. It spans about 100,000 light-years across and contains vast amounts of gas, dust, and dark matter that hold it together gravitationally. Our solar system is located in one of the galaxy's spiral arms, about 27,000 light-years from the galactic center. The Milky Way is just one of billions of galaxies in the observable universe."
+    }
+};
+
+// Modal functions
+function showPlanetModal(planetId) {
+    const data = planetData[planetId];
+    if (!data) return;
+
+    document.getElementById('modal-planet-image').src = `{{ url_for('static', filename='img/planets/') }}${planetId}.jpg`;
+    document.getElementById('modal-planet-title').textContent = data.title;
+    document.getElementById('modal-planet-description').textContent = data.description;
+    document.getElementById('modal-distance').textContent = data.distance;
+    document.getElementById('modal-diameter').textContent = data.diameter;
+    document.getElementById('modal-temperature').textContent = data.temperature;
+    document.getElementById('modal-day-length').textContent = data.dayLength;
+    document.getElementById('modal-year-length').textContent = data.yearLength;
+    document.getElementById('modal-moons').textContent = data.moons;
+
+    const factsList = document.getElementById('modal-facts-list');
+    factsList.innerHTML = '';
+    data.facts.forEach(fact => {
+        const li = document.createElement('li');
+        li.textContent = fact;
+        factsList.appendChild(li);
+    });
+
+    document.getElementById('planet-modal').style.display = 'flex';
+}
+
+function closePlanetModal() {
+    document.getElementById('planet-modal').style.display = 'none';
+}
+
+function showKnowledgeModal(topicId) {
+    const data = knowledgeData[topicId];
+    if (!data) return;
+
+    document.getElementById('knowledge-modal-icon').className = `fas ${data.icon}`;
+    document.getElementById('knowledge-modal-title').textContent = data.title;
+    document.getElementById('knowledge-modal-content').textContent = data.content;
+
+    document.getElementById('knowledge-modal').style.display = 'flex';
+}
+
+function closeKnowledgeModal() {
+    document.getElementById('knowledge-modal').style.display = 'none';
+}
+
+function closeFactCard() {
+    const card = document.getElementById('floating-fact-card');
+    card.style.animation = 'fact-card-slide-up 0.3s ease-out forwards';
+    setTimeout(() => {
+        card.style.display = 'none';
+    }, 300);
+}
+
+// Initialize random fact button
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('random-fact-btn').addEventListener('click', async function() {
+        try {
+            const response = await fetch('/api/knowledge-base');
+            if (!response.ok) throw new Error('Failed to load knowledge');
+
+            const data = await response.json();
+            const facts = [];
+
+            // Extract space facts
+            if (data.space_knowledge) {
+                Object.entries(data.space_knowledge).forEach(([key, content]) => {
+                    if (typeof content === 'string' && content.length > 50) {
+                        const shortFact = content.substring(0, 150) + (content.length > 150 ? '...' : '');
+                        facts.push({
+                            text: shortFact,
+                            icon: getCategoryIcon(key),
+                            category: key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+                        });
+                    }
+                });
+            }
+
+            if (facts.length > 0) {
+                const randomFact = facts[Math.floor(Math.random() * facts.length)];
+                displayFactCard(randomFact);
+            }
+        } catch (error) {
+            console.error('Error loading space facts:', error);
+            displayFactCard({
+                text: "Unable to load space facts right now. Please try again later!",
+                icon: "❌",
+                category: "Error"
+            });
+        }
+    });
+});
+
+function displayFactCard(fact) {
+    const card = document.getElementById('floating-fact-card');
+    const textElement = card.querySelector('#fact-text');
+    const iconElement = card.querySelector('.fact-icon');
+
+    textElement.textContent = fact.text;
+    iconElement.textContent = fact.icon;
+    card.setAttribute('data-category', fact.category.toLowerCase().replace(/\s+/g, '-'));
+
+    card.style.display = 'block';
+    card.style.animation = 'fact-card-slide-down 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards';
+
+    // Auto-hide after 10 seconds
+    setTimeout(() => {
+        closeFactCard();
+    }, 10000);
+}
+
+function getCategoryIcon(key) {
+    const iconMap = {
+        planet_mercury: "☿", planet_venus: "♀", planet_earth: "🌍", planet_mars: "♂",
+        planet_jupiter: "♃", planet_saturn: "♄", planet_uranus: "⛢", planet_neptune: "♆",
+        black_hole: "⚫", event_horizon: "⭕", singularity: "∞", types_of_black_holes: "🌌",
+        nebula: "🌠", milky_way: "🌌", star_life_cycle: "⭐", universe_expansion: "🌌"
+    };
+    return iconMap[key] || "🚀";
+}
+</script>
+{% endblock %}

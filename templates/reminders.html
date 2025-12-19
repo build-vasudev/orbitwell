@@ -1,0 +1,699 @@
+{% extends "base.html" %}
+
+{% block title %}Wellness Reminders - OrbitWell{% endblock %}
+
+{% block content %}
+<div class="cosmic-container">
+    <!-- Reminders Header -->
+    <section class="reminders-header">
+        <h1 class="page-title">Wellness Reminders</h1>
+        <p class="page-subtitle">Stay on track with your mental health journey</p>
+    </section>
+
+    <!-- Add Reminder Form -->
+    <section class="reminder-form-section">
+        <div class="reminder-form-card glass-card">
+            <h3><i class="fas fa-plus-circle"></i> Create New Reminder</h3>
+            <form id="reminder-form" class="reminder-form">
+                <div class="form-group">
+                    <label for="reminder-title">Reminder Title</label>
+                    <input type="text" id="reminder-title" placeholder="e.g., Take a mindful walk" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="reminder-datetime">Date & Time</label>
+                    <input type="datetime-local" id="reminder-datetime" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="reminder-description">Description (Optional)</label>
+                    <textarea id="reminder-description" placeholder="Additional details about your reminder..." rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="reminder-category">Category</label>
+                    <select id="reminder-category">
+                        <option value="wellness">Wellness</option>
+                        <option value="meditation">Meditation</option>
+                        <option value="exercise">Exercise</option>
+                        <option value="social">Social</option>
+                        <option value="work">Work</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="cosmic-btn">
+                    <i class="fas fa-plus"></i> Create Reminder
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Reminders Display -->
+    <section class="reminders-display">
+        <!-- Active Reminders Section -->
+        <div id="active-reminders-section" class="reminders-section">
+            <h3 class="section-title active-title">
+                <i class="fas fa-clock"></i> Active Reminders
+            </h3>
+            <div id="active-reminders" class="reminders-list">
+                <div class="loading">Loading reminders...</div>
+            </div>
+        </div>
+
+        <!-- Completed Today Section -->
+        <div id="completed-today-section" class="reminders-section">
+            <h3 class="section-title completed-title">
+                <i class="fas fa-check-circle"></i> Completed Today
+            </h3>
+            <div id="completed-today" class="reminders-list">
+                <div class="loading">Loading completed reminders...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section">
+        <div class="stats-card glass-card">
+            <h3><i class="fas fa-chart-line"></i> Your Progress</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="total-reminders">0</div>
+                    <div class="stat-label">Total Reminders</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="active-reminders-count">0</div>
+                    <div class="stat-label">Active</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="completed-today-count">0</div>
+                    <div class="stat-label">Completed Today</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="progress-percent">0%</div>
+                    <div class="stat-label">Completion Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Streak Card -->
+        <div class="streak-card glass-card">
+            <h3><i class="fas fa-fire"></i> Current Streak</h3>
+            <div class="streak-display">
+                <div class="streak-number" id="current-streak">0</div>
+                <div class="streak-label">days in a row</div>
+                <div class="streak-flame">
+                    <i class="fas fa-fire"></i>
+                </div>
+            </div>
+            <div class="streak-message" id="streak-message">Start completing reminders to build your streak!</div>
+        </div>
+    </section>
+</div>
+
+<style>
+.cosmic-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+.reminders-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-top: 90px;
+}
+
+.page-title {
+    font-size: 3rem;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 20px rgba(123, 104, 238, 0.5);
+}
+
+.page-subtitle {
+    font-size: 1.2rem;
+    color: #cdd9ff;
+}
+
+/* Form Section */
+.reminder-form-section {
+    margin-bottom: 3rem;
+}
+
+.reminder-form-card {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.reminder-form-card h3 {
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    color: #cdd9ff;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: rgba(123, 104, 238, 0.5);
+    box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.cosmic-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(45deg, #7b68ee, #ff6b9d);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(123, 104, 238, 0.4);
+}
+
+.cosmic-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(123, 104, 238, 0.6);
+}
+
+/* Reminders Display */
+.reminders-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.reminders-section {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+.section-title {
+    color: #ffffff;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.active-title {
+    color: #7b68ee;
+}
+
+.completed-title {
+    color: #4CAF50;
+}
+
+.reminders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.reminder-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.reminder-item:hover {
+    border-color: rgba(123, 104, 238, 0.3);
+    transform: translateY(-2px);
+}
+
+.reminder-item.completed {
+    opacity: 0.7;
+    border-color: rgba(76, 175, 80, 0.3);
+}
+
+.reminder-content {
+    margin-bottom: 0.75rem;
+}
+
+.reminder-content h4 {
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+}
+
+.reminder-content p {
+    color: #cdd9ff;
+    font-size: 0.9rem;
+    margin: 0.25rem 0;
+}
+
+.reminder-desc {
+    color: #8892a8;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.reminder-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.reminder-actions .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-success {
+    background: rgba(76, 175, 80, 0.2);
+    color: #a5ffb1;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.btn-success:hover {
+    background: rgba(76, 175, 80, 0.3);
+}
+
+.btn-warning {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffeaa7;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.btn-warning:hover {
+    background: rgba(255, 193, 7, 0.3);
+}
+
+.btn-danger {
+    background: rgba(244, 67, 54, 0.2);
+    color: #ffb3b3;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.btn-danger:hover {
+    background: rgba(244, 67, 54, 0.3);
+}
+
+/* Stats Section */
+.stats-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.stats-card,
+.streak-card {
+    padding: 2rem;
+}
+
+.stats-card h3,
+.streak-card h3 {
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #7b68ee;
+    text-shadow: 0 0 15px rgba(123, 104, 238, 0.5);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #cdd9ff;
+    font-size: 0.9rem;
+}
+
+/* Streak Display */
+.streak-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.streak-number {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #ff6b35;
+    text-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+}
+
+.streak-label {
+    color: #cdd9ff;
+    font-size: 1rem;
+}
+
+.streak-flame {
+    font-size: 2rem;
+    color: #ff6b35;
+    animation: flameFlicker 2s ease-in-out infinite alternate;
+}
+
+.streak-message {
+    text-align: center;
+    color: #8892a8;
+    font-style: italic;
+}
+
+@keyframes flameFlicker {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+/* Loading and Empty States */
+.loading {
+    text-align: center;
+    color: #8892a8;
+    padding: 2rem;
+    font-style: italic;
+}
+
+.no-reminders {
+    text-align: center;
+    color: #8892a8;
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .reminders-display {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-section {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .streak-display {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .streak-number {
+        font-size: 3rem;
+    }
+}
+</style>
+
+<script>
+// ===============================
+// ORBITWELL REMINDER SYSTEM (FULLY FUNCTIONAL)
+// ===============================
+// Load reminders from storage
+function getReminders() {
+    const data = localStorage.getItem("orbitwell_reminders");
+    return data ? JSON.parse(data) : [];
+}
+
+// Save reminders to storage
+function saveReminders(reminders) {
+    localStorage.setItem("orbitwell_reminders", JSON.stringify(reminders));
+}
+
+// Helper – get today's date
+function today() {
+    return new Date().toISOString().slice(0, 10);
+}
+
+// Initialize streak tracking
+function getStreakData() {
+    const data = localStorage.getItem("orbitwell_streak");
+    return data ? JSON.parse(data) : { streak: 0, lastDate: null };
+}
+
+function saveStreakData(data) {
+    localStorage.setItem("orbitwell_streak", JSON.stringify(data));
+}
+
+// ===============================
+// ADD REMINDER
+// ===============================
+function addReminder(title, description, datetime) {
+    const reminders = getReminders();
+    reminders.push({
+        id: Date.now(),
+        title,
+        description,
+        datetime,
+        completed: false,
+        completedDate: null
+    });
+    saveReminders(reminders);
+    loadRemindersUI();
+}
+
+// ===============================
+// MARK COMPLETED
+// ===============================
+function completeReminder(id) {
+    const reminders = getReminders();
+    reminders.forEach(r => {
+        if (r.id === id) {
+            r.completed = true;
+            r.completedDate = today();
+        }
+    });
+    saveReminders(reminders);
+    updateStreak();  
+    loadRemindersUI();
+}
+
+// Delete reminder
+function deleteReminder(id) {
+    const reminders = getReminders().filter(r => r.id !== id);
+    saveReminders(reminders);
+    loadRemindersUI();
+}
+
+// ===============================
+// STREAK CALCULATION
+// ===============================
+function updateStreak() {
+    const streakData = getStreakData();
+    const reminders = getReminders();
+    const todayDate = today();
+
+    // Did user complete something today?
+    const completedToday = reminders.some(r => r.completedDate === todayDate);
+    if (!completedToday) return; // nothing to update
+
+    if (streakData.lastDate === todayDate) {
+        return; // streak already recorded today
+    }
+
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    if (streakData.lastDate === yesterday) {
+        streakData.streak++; // continue streak
+    } else {
+        streakData.streak = 1; // reset & start new
+    }
+
+    streakData.lastDate = todayDate;
+    saveStreakData(streakData);
+}
+
+// ===============================
+// BUILD UI
+// ===============================
+function loadRemindersUI() {
+    const reminders = getReminders();
+    const todayDate = today();
+
+    const activeList = document.getElementById("active-reminders");
+    const completedTodayList = document.getElementById("completed-today");
+    const progressPercent = document.getElementById("progress-percent");
+    const streakElement = document.getElementById("current-streak");
+
+    if (!activeList || !completedTodayList) return; // page not loaded
+
+    activeList.innerHTML = "";
+    completedTodayList.innerHTML = "";
+
+    let total = reminders.length;
+    let completedTotal = reminders.filter(r => r.completed).length;
+
+    // ====================
+    // ACTIVE REMINDERS
+    // ====================
+    const activeReminders = reminders.filter(r => !r.completed);
+    if (activeReminders.length === 0) {
+        activeList.innerHTML = '<p class="no-reminders">No active reminders</p>';
+    } else {
+        activeReminders.forEach(r => {
+            const date = new Date(r.datetime);
+            const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            activeList.innerHTML += `
+                <div class="reminder-item">
+                    <div class="reminder-content">
+                        <h4>${escapeHtml(r.title)}</h4>
+                        <p>${formattedDate}</p>
+                        ${r.description ? `<p class="reminder-desc">${escapeHtml(r.description)}</p>` : ''}
+                    </div>
+                    <div class="reminder-actions">
+                        <button onclick="completeReminder(${r.id})" class="btn btn-sm btn-success">Mark Complete</button>
+                        <button onclick="deleteReminder(${r.id})" class="btn btn-sm btn-danger">Delete</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // ====================
+    // COMPLETED TODAY
+    // ====================
+    const completedToday = reminders.filter(r => r.completedDate === todayDate);
+    if (completedToday.length === 0) {
+        completedTodayList.innerHTML = '<p class="no-reminders">No reminders completed today</p>';
+    } else {
+        completedToday.forEach(r => {
+            const date = new Date(r.datetime);
+            const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            completedTodayList.innerHTML += `
+                <div class="reminder-item completed">
+                    <div class="reminder-content">
+                        <h4>${escapeHtml(r.title)}</h4>
+                        <p>${formattedDate}</p>
+                        ${r.description ? `<p class="reminder-desc">${escapeHtml(r.description)}</p>` : ''}
+                        <small style="color: #4CAF50;">Completed Today</small>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // ====================
+    // PROGRESS BAR
+    // ====================
+    if (progressPercent) {
+        const percent = total === 0 ? 0 : Math.round((completedTotal / total) * 100);
+        progressPercent.textContent = percent + "%";
+    }
+
+    // ====================
+    // STREAK
+    // ====================
+    const streakData = getStreakData();
+    if (streakElement) {
+        streakElement.textContent = streakData.streak;
+    }
+
+    // Update other stats
+    const totalEl = document.getElementById("total-reminders");
+    const activeCountEl = document.getElementById("active-reminders-count");
+    const completedTodayCountEl = document.getElementById("completed-today-count");
+    
+    if (totalEl) totalEl.textContent = total;
+    if (activeCountEl) activeCountEl.textContent = activeReminders.length;
+    if (completedTodayCountEl) completedTodayCountEl.textContent = completedToday.length;
+}
+
+// Helper function to escape HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ===============================
+// AUTO INITIALIZE PAGE
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+    loadRemindersUI();
+    
+    // Connect form submission
+    const reminderForm = document.getElementById('reminder-form');
+    if (reminderForm) {
+        reminderForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const titleInput = document.getElementById('reminder-title');
+            const datetimeInput = document.getElementById('reminder-datetime');
+            const descriptionInput = document.getElementById('reminder-description');
+
+            if (!titleInput || !datetimeInput) return;
+
+            const title = titleInput.value.trim();
+            const datetime = datetimeInput.value;
+            const description = descriptionInput ? descriptionInput.value.trim() : '';
+
+            if (!title || !datetime) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            addReminder(title, description, datetime);
+            reminderForm.reset();
+            
+            // Show notification if available
+            if (window.app && window.app.showNotification) {
+                window.app.showNotification('Reminder added successfully!', 'success');
+            }
+        });
+    }
+});
+</script>
+
+{% endblock %}

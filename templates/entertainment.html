@@ -1,0 +1,1485 @@
+{% extends "base.html" %}
+
+{% block title %}Entertainment Hub - OrbitWell{% endblock %}
+
+{% block content %}
+<div class="cosmic-container">
+    <!-- Hub Header -->
+    <section class="hub-header">
+        <h1 class="hub-title">Entertainment Hub</h1>
+        <p class="hub-subtitle">Relax, meditate, play games, and express yourself in your cosmic sanctuary</p>
+    </section>
+
+    <!-- Main Entertainment Grid -->
+    <div class="entertainment-grid">
+        <!-- Music Player -->
+        <div class="entertainment-card music-card">
+            <div class="card-header">
+                <h3><i class="fas fa-music"></i> Cosmic Music Player</h3>
+            </div>
+            <div class="cosmic-music-player">
+                <div class="music-header">
+                    <i class="fa-solid fa-music"></i>
+                    <h3 id="music-title">Cosmic Waves</h3>
+                </div>
+
+                <div class="player-visual"></div>
+
+                <div class="controls-row">
+                    <button id="prev-btn" class="music-btn"><i class="fa-solid fa-backward"></i></button>
+                    <button id="play-btn" class="music-btn play-btn"><i class="fa-solid fa-play"></i></button>
+                    <button id="next-btn" class="music-btn"><i class="fa-solid fa-forward"></i></button>
+                </div>
+
+                <input type="range" id="seek-bar" min="0" value="0" class="seek-slider">
+                <select id="song-selector" class="song-dropdown"></select>
+            </div>
+        </div>
+
+        <!-- Guided Meditation -->
+        <div class="entertainment-card meditation-card">
+            <div class="card-header">
+                <h3><i class="fas fa-om"></i> Guided Meditation</h3>
+            </div>
+            <div class="meditation-section">
+                <div class="breathing-guide">
+                    <div class="breathing-circle" id="breathing-circle">
+                        <div class="breathing-instruction" id="breathing-instruction">Breathe</div>
+                    </div>
+                    <div class="breathing-controls">
+                        <button class="cosmic-btn" id="breathing-start-btn">Start Breathing</button>
+                        <div class="breathing-timer" id="breathing-timer">0:00</div>
+                    </div>
+                </div>
+
+                <div class="meditation-options">
+                    <button onclick="startMeditation('relax')" class="meditation-option">
+                        <i class="fas fa-brain"></i>
+                        <span>Stress Relief</span>
+                        <small>10 minutes</small>
+                    </button>
+                    <button onclick="startMeditation('calm')" class="meditation-option">
+                        <i class="fas fa-moon"></i>
+                        <span>Better Sleep</span>
+                        <small>15 minutes</small>
+                    </button>
+                    <button onclick="startMeditation('focus')" class="meditation-option">
+                        <i class="fas fa-bullseye"></i>
+                        <span>Focus & Clarity</span>
+                        <small>5 minutes</small>
+                    </button>
+                </div>
+
+                <div class="meditation-controls">
+                    <div id="instruction-box" class="instruction-box">Ready to begin your meditation journey</div>
+                    <div id="meditation-timer" class="meditation-timer">00:00</div>
+                    <button onclick="stopMeditation()" class="cosmic-btn stop-btn">Stop Meditation</button>
+                </div>
+
+                <div class="meditation-status" id="meditation-status">
+                    🧘 Ready to Begin
+                </div>
+            </div>
+        </div>
+
+        <!-- Journal -->
+        <div class="entertainment-card journal-card">
+            <div class="card-header">
+                <h3><i class="fas fa-book"></i> Wellness Journal</h3>
+            </div>
+            <div class="journal-section">
+                <div class="journal-input">
+                    <textarea id="journal-entry" placeholder="Write about your thoughts, feelings, or experiences today... What's on your mind?"></textarea>
+                    <div class="journal-actions">
+                        <button class="cosmic-btn" id="save-journal-btn">Save Entry</button>
+                        <button class="cosmic-btn secondary" id="clear-journal-btn">Clear</button>
+                    </div>
+                </div>
+
+                <div class="journal-entries">
+                    <h4>Recent Entries</h4>
+                    <div id="journal-list" class="journal-list">
+                        <div class="no-entries">No journal entries yet. Start writing!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mini Games -->
+        <div class="entertainment-card games-card">
+            <div class="card-header">
+                <h3><i class="fas fa-gamepad"></i> Mini Games</h3>
+            </div>
+            <div class="games-grid">
+                <button onclick="startGame('memory')" class="game-option">
+                    <i class="fas fa-brain"></i>
+                    <span>Memory Match</span>
+                </button>
+                <button onclick="startGame('rps')" class="game-option">
+                    <i class="fas fa-hand-rock"></i>
+                    <span>Rock Paper Scissors</span>
+                </button>
+                <button onclick="startGame('reaction')" class="game-option">
+                    <i class="fas fa-bolt"></i>
+                    <span>Reaction Test</span>
+                </button>
+                <button onclick="startGame('number')" class="game-option">
+                    <i class="fas fa-calculator"></i>
+                    <span>Number Guess</span>
+                </button>
+                <button onclick="startGame('trivia')" class="game-option">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Space Trivia</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Affirmations & Gratitude -->
+    <section class="wellness-section">
+        <div class="wellness-cards">
+            <div class="wellness-card affirmations">
+                <h3><i class="fas fa-heart"></i> Daily Affirmations</h3>
+                <div class="affirmation-content">
+                    <p id="current-affirmation">"I am worthy of peace and happiness in my life."</p>
+                    <button class="cosmic-btn" id="new-affirmation-btn">New Affirmation</button>
+                </div>
+            </div>
+
+            <div class="wellness-card gratitude">
+                <h3><i class="fas fa-star"></i> Gratitude Practice</h3>
+                <div class="gratitude-content">
+                    <textarea id="gratitude-entry" placeholder="What are you grateful for today?"></textarea>
+                    <button class="cosmic-btn" id="save-gratitude-btn">Save Gratitude</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Game Modal -->
+<div id="game-modal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2 id="game-title">Game</h2>
+            <button onclick="closeGame()" class="modal-close-btn">×</button>
+        </div>
+        <div id="game-content" class="modal-content"></div>
+    </div>
+</div>
+
+<style>
+.cosmic-container {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Hub Header */
+.hub-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-top: 90px;
+}
+
+.hub-title {
+    font-size: 3rem;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 20px rgba(123, 104, 238, 0.5);
+}
+
+.hub-subtitle {
+    font-size: 1.2rem;
+    color: #cdd9ff;
+}
+
+/* Entertainment Grid */
+.entertainment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.entertainment-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.card-header {
+    margin-bottom: 1.5rem;
+}
+
+.card-header h3 {
+    color: #ffffff;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.3rem;
+}
+
+/* ========================================
+   COSMIC MUSIC PLAYER - FUTURISTIC THEME
+   ======================================== */
+
+.cosmic-music-player {
+    position: relative;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(10, 10, 25, 0.95), rgba(20, 15, 40, 0.95));
+    border: 2px solid rgba(123, 104, 238, 0.3);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 
+        0 0 30px rgba(123, 104, 238, 0.3),
+        inset 0 0 30px rgba(123, 104, 238, 0.1);
+    overflow: hidden;
+    animation: cosmicGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes cosmicGlow {
+    0% {
+        box-shadow: 
+            0 0 30px rgba(123, 104, 238, 0.3),
+            inset 0 0 30px rgba(123, 104, 238, 0.1);
+    }
+    100% {
+        box-shadow: 
+            0 0 50px rgba(123, 104, 238, 0.5),
+            inset 0 0 40px rgba(123, 104, 238, 0.2);
+    }
+}
+
+.cosmic-music-player::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(123, 104, 238, 0.1) 0%, transparent 70%);
+    animation: rotateGlow 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes rotateGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.music-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(123, 104, 238, 0.3);
+}
+
+.music-header i {
+    font-size: 1.5rem;
+    color: #7b68ee;
+    text-shadow: 0 0 10px rgba(123, 104, 238, 0.8);
+    animation: pulseIcon 2s ease-in-out infinite;
+}
+
+@keyframes pulseIcon {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.music-header h3 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 0 0 15px rgba(123, 104, 238, 0.6);
+    letter-spacing: 1px;
+}
+
+.player-visual {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 2rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(123, 104, 238, 0.3), rgba(255, 107, 157, 0.3));
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 0 40px rgba(123, 104, 238, 0.5),
+        inset 0 0 40px rgba(123, 104, 238, 0.2);
+    animation: visualPulse 3s ease-in-out infinite;
+}
+
+@keyframes visualPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 
+            0 0 40px rgba(123, 104, 238, 0.5),
+            inset 0 0 40px rgba(123, 104, 238, 0.2);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 
+            0 0 60px rgba(123, 104, 238, 0.7),
+            inset 0 0 50px rgba(123, 104, 238, 0.3);
+    }
+}
+
+.player-visual::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    height: 60%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+    animation: innerRotate 10s linear infinite;
+}
+
+@keyframes innerRotate {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.music-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid rgba(123, 104, 238, 0.5);
+    background: rgba(123, 104, 238, 0.2);
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+    box-shadow: 0 0 15px rgba(123, 104, 238, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.music-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.music-btn:hover::before {
+    width: 100%;
+    height: 100%;
+}
+
+.music-btn:hover {
+    transform: scale(1.1);
+    border-color: rgba(123, 104, 238, 0.8);
+    box-shadow: 0 0 25px rgba(123, 104, 238, 0.6);
+    background: rgba(123, 104, 238, 0.4);
+}
+
+.music-btn:active {
+    transform: scale(0.95);
+}
+
+.play-btn {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #7b68ee, #ff6b9d);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 0 30px rgba(123, 104, 238, 0.6),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    font-size: 1.5rem;
+    animation: playButtonGlow 2s ease-in-out infinite;
+}
+
+@keyframes playButtonGlow {
+    0%, 100% {
+        box-shadow: 
+            0 0 30px rgba(123, 104, 238, 0.6),
+            inset 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+    50% {
+        box-shadow: 
+            0 0 50px rgba(123, 104, 238, 0.9),
+            inset 0 0 30px rgba(255, 255, 255, 0.2);
+    }
+}
+
+.play-btn:hover {
+    transform: scale(1.15);
+    box-shadow: 
+        0 0 40px rgba(123, 104, 238, 0.8),
+        inset 0 0 25px rgba(255, 255, 255, 0.15);
+}
+
+.seek-slider {
+    width: 100%;
+    height: 8px;
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.seek-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7b68ee, #ff6b9d);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    box-shadow: 
+        0 0 15px rgba(123, 104, 238, 0.8),
+        inset 0 0 5px rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.seek-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 
+        0 0 25px rgba(123, 104, 238, 1),
+        inset 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.seek-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7b68ee, #ff6b9d);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    box-shadow: 
+        0 0 15px rgba(123, 104, 238, 0.8),
+        inset 0 0 5px rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.seek-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 
+        0 0 25px rgba(123, 104, 238, 1),
+        inset 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.seek-slider::-webkit-slider-runnable-track {
+    height: 8px;
+    background: linear-gradient(90deg, 
+        rgba(123, 104, 238, 0.5) 0%, 
+        rgba(255, 107, 157, 0.5) 100%);
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.seek-slider::-moz-range-track {
+    height: 8px;
+    background: linear-gradient(90deg, 
+        rgba(123, 104, 238, 0.5) 0%, 
+        rgba(255, 107, 157, 0.5) 100%);
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.song-dropdown {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(123, 104, 238, 0.2);
+    border: 2px solid rgba(123, 104, 238, 0.4);
+    border-radius: 12px;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px rgba(123, 104, 238, 0.3);
+}
+
+.song-dropdown:hover {
+    border-color: rgba(123, 104, 238, 0.6);
+    background: rgba(123, 104, 238, 0.3);
+    box-shadow: 0 0 25px rgba(123, 104, 238, 0.5);
+}
+
+.song-dropdown:focus {
+    border-color: rgba(123, 104, 238, 0.8);
+    box-shadow: 0 0 30px rgba(123, 104, 238, 0.7);
+}
+
+.song-dropdown option {
+    background: rgba(10, 10, 25, 0.95);
+    color: #ffffff;
+    padding: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .cosmic-music-player {
+        padding: 1.5rem;
+    }
+
+    .player-visual {
+        width: 150px;
+        height: 150px;
+    }
+
+    .music-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
+
+    .play-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1.3rem;
+    }
+
+    .music-header h3 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Legacy Music Player Styles (kept for compatibility) */
+.music-player {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.album-art {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.album-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #7b68ee, #ff6b9d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.album-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.album-art:hover .album-overlay {
+    opacity: 1;
+}
+
+.play-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.play-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.track-info {
+    text-align: center;
+}
+
+.track-title {
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.track-artist {
+    color: #8892a8;
+    font-size: 0.9rem;
+}
+
+.progress-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    margin: 8px 0;
+}
+
+.progress-bar:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(45deg, #7b68ee, #ff6b9d);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.1s ease;
+    box-shadow: 0 0 8px rgba(123, 104, 238, 0.6);
+}
+
+.time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #8892a8;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.control-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.main-play {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, #7b68ee, #ff6b9d);
+}
+
+.playlist {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.playlist-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 0.25rem;
+}
+
+.playlist-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.playlist-item.active {
+    background: rgba(123, 104, 238, 0.2);
+    border: 1px solid rgba(123, 104, 238, 0.5);
+}
+
+.track-name {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.track-duration {
+    color: #8892a8;
+    font-size: 0.8rem;
+}
+
+/* Meditation */
+.breathing-guide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.breathing-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(123, 104, 238, 0.3), rgba(123, 104, 238, 0.1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 4s ease-in-out;
+    transform: scale(1);
+    box-shadow: 0 0 30px rgba(123, 104, 238, 0.3);
+}
+
+.breathing-instruction {
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+    transition: opacity 0.3s ease;
+    opacity: 1;
+}
+
+.breathing-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.breathing-timer {
+    color: #7b68ee;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.meditation-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.meditation-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #cdd9ff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.meditation-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(123, 104, 238, 0.3);
+    transform: translateY(-2px);
+}
+
+.meditation-option i {
+    font-size: 1.5rem;
+    color: #7b68ee;
+}
+
+.meditation-option span {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.meditation-option small {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.meditation-status {
+    text-align: center;
+    color: #8892a8;
+    font-style: italic;
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.meditation-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.instruction-box {
+    text-align: center;
+    color: #cdd9ff;
+    font-size: 1.1rem;
+    font-weight: 500;
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(123, 104, 238, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(123, 104, 238, 0.2);
+}
+
+.meditation-timer {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #7b68ee;
+    text-shadow: 0 0 15px rgba(123, 104, 238, 0.5);
+    font-family: 'Orbitron', monospace;
+    letter-spacing: 2px;
+}
+
+.stop-btn {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
+    margin-top: 0.5rem;
+}
+
+/* Journal */
+.journal-input {
+    margin-bottom: 2rem;
+}
+
+.journal-input textarea {
+    width: 100%;
+    min-height: 120px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #ffffff;
+    padding: 1rem;
+    resize: vertical;
+    font-family: inherit;
+    outline: none;
+}
+
+.journal-input textarea::placeholder {
+    color: #8892a8;
+}
+
+.journal-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.journal-actions .cosmic-btn.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.journal-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.journal-entry-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.journal-entry-date {
+    color: #7b68ee;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.journal-entry-content {
+    color: #cdd9ff;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+}
+
+.journal-entry-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-delete {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    background: rgba(244, 67, 54, 0.2);
+    color: #ffb3b3;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+    background: rgba(244, 67, 54, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Games */
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.game-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #cdd9ff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.game-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(123, 104, 238, 0.3);
+    transform: translateY(-2px);
+}
+
+.game-option i {
+    font-size: 1.5rem;
+    color: #7b68ee;
+}
+
+.game-option span {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Memory Game Styles */
+.memory-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #8892a8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #7b68ee;
+    text-shadow: 0 0 10px rgba(123, 104, 238, 0.5);
+}
+
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    perspective: 1000px;
+}
+
+.memory-card {
+    aspect-ratio: 1;
+    cursor: pointer;
+    perspective: 1000px;
+}
+
+.memory-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.memory-card.flipped .memory-card-inner {
+    transform: rotateY(180deg);
+}
+
+.memory-card.matched .memory-card-inner {
+    transform: rotateY(180deg);
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.memory-card-front,
+.memory-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.memory-card-front {
+    background: linear-gradient(135deg, rgba(123, 104, 238, 0.3), rgba(255, 107, 157, 0.3));
+    transform: rotateY(0deg);
+}
+
+.memory-card-back {
+    background: linear-gradient(135deg, rgba(123, 104, 238, 0.6), rgba(255, 107, 157, 0.6));
+    transform: rotateY(180deg);
+    font-size: 2rem;
+}
+
+.memory-card:hover .memory-card-front {
+    background: linear-gradient(135deg, rgba(123, 104, 238, 0.4), rgba(255, 107, 157, 0.4));
+    border-color: rgba(123, 104, 238, 0.5);
+    transform: scale(1.05);
+}
+
+.memory-card.matched .memory-card-back {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.6), rgba(129, 199, 132, 0.6));
+    border-color: rgba(76, 175, 80, 0.8);
+}
+
+.card-icon {
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: bold;
+}
+
+.memory-status {
+    text-align: center;
+    color: #cdd9ff;
+    font-size: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.memory-win-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    border-radius: 16px;
+    animation: fadeIn 0.3s ease;
+}
+
+.win-content {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.win-content h2 {
+    color: #ffffff;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 20px rgba(123, 104, 238, 0.5);
+}
+
+.win-content > p {
+    color: #cdd9ff;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.win-stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+}
+
+.win-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.win-stat-label {
+    font-size: 0.9rem;
+    color: #8892a8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.win-stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #7b68ee;
+    text-shadow: 0 0 15px rgba(123, 104, 238, 0.6);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Wellness Section */
+.wellness-section {
+    margin-top: 2rem;
+}
+
+.wellness-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.wellness-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+}
+
+.wellness-card h3 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.affirmation-content p {
+    color: #cdd9ff;
+    font-size: 1.1rem;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gratitude-content textarea {
+    width: 100%;
+    min-height: 80px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #ffffff;
+    padding: 0.75rem;
+    resize: vertical;
+    font-family: inherit;
+    outline: none;
+    margin-bottom: 1rem;
+}
+
+.gratitude-content textarea::placeholder {
+    color: #8892a8;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-container {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header h2 {
+    color: #ffffff;
+    margin: 0;
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    color: #8892a8;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close-btn:hover {
+    color: #ffffff;
+}
+
+.modal-content {
+    padding: 2rem;
+    position: relative;
+    min-height: 300px;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .entertainment-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .wellness-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .games-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .album-art {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+</style>
+
+<script>
+// ===============================
+// COSMIC MUSIC PLAYER (FULLY WORKING)
+// ===============================
+// List of available songs
+const playlist = [
+    { title: "Cosmic Waves", file: "song1.mp3" },
+    { title: "Galactic Dreams", file: "song2.mp3" },
+    { title: "Stellar Light", file: "song3.mp3" },
+    { title: "Nebula Echoes", file: "song4.mp3" },
+    { title: "Astral Journey", file: "song5.mp3" }
+];
+
+let currentSongIndex = 0;
+let isPlaying = false;
+const audio = new Audio();
+audio.src = `/static/sounds/${playlist[currentSongIndex].file}`;
+
+// DOM elements
+const playBtn = document.getElementById("play-btn");
+const prevBtn = document.getElementById("prev-btn");
+const nextBtn = document.getElementById("next-btn");
+const seekBar = document.getElementById("seek-bar");
+const musicTitle = document.getElementById("music-title");
+const songSelector = document.getElementById("song-selector");
+
+// ===============================
+// LOAD SELECTOR DROPDOWN
+// ===============================
+function loadSongSelector() {
+    if (!songSelector) return;
+    songSelector.innerHTML = playlist
+        .map((song, i) => `<option value="${i}">${song.title}</option>`)
+        .join("");
+    songSelector.value = currentSongIndex;
+}
+
+// ===============================
+// LOAD SONG
+// ===============================
+function loadSong(index) {
+    currentSongIndex = index;
+    audio.src = `/static/sounds/${playlist[currentSongIndex].file}`;
+    musicTitle.innerText = playlist[currentSongIndex].title;
+    if (songSelector) songSelector.value = currentSongIndex;
+    if (isPlaying) audio.play();
+}
+
+// ===============================
+// PLAY / PAUSE
+// ===============================
+function togglePlay() {
+    if (!isPlaying) {
+        audio.play();
+        isPlaying = true;
+        if (playBtn) {
+            const icon = playBtn.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-pause';
+        }
+    } else {
+        audio.pause();
+        isPlaying = false;
+        if (playBtn) {
+            const icon = playBtn.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-play';
+        }
+    }
+}
+
+// ===============================
+// NEXT SONG
+// ===============================
+function playNext() {
+    currentSongIndex = (currentSongIndex + 1) % playlist.length;
+    loadSong(currentSongIndex);
+}
+
+// ===============================
+// PREVIOUS SONG
+// ===============================
+function playPrev() {
+    currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+    loadSong(currentSongIndex);
+}
+
+// ===============================
+// INITIALIZE ON PAGE LOAD
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+    loadSongSelector();
+    
+    // Event listeners
+    if (playBtn) playBtn.addEventListener("click", togglePlay);
+    if (prevBtn) prevBtn.addEventListener("click", playPrev);
+    if (nextBtn) nextBtn.addEventListener("click", playNext);
+    
+    // Seek bar control
+    if (seekBar) {
+        audio.addEventListener("loadedmetadata", () => {
+            seekBar.max = audio.duration;
+        });
+        
+        audio.addEventListener("timeupdate", () => {
+            seekBar.value = audio.currentTime;
+        });
+        
+        seekBar.addEventListener("input", () => {
+            audio.currentTime = seekBar.value;
+        });
+    }
+    
+    // Auto next when song ends
+    audio.addEventListener("ended", () => {
+        playNext();
+    });
+    
+    // Manual song selection
+    if (songSelector) {
+        songSelector.addEventListener("change", (e) => {
+            loadSong(parseInt(e.target.value));
+        });
+    }
+    
+    // Initialize first song
+    loadSong(0);
+});
+</script>
+
+{% endblock %}

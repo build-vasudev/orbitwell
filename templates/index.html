@@ -1,0 +1,532 @@
+{% extends "base.html" %}
+
+{% block title %}OrbitWell - Space Wellness Companion{% endblock %}
+
+{% block content %}
+<div class="cosmic-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span>Welcome to</span>
+                <span id="orbitwell-title">OrbitWell</span>
+            </h1>
+            <p class="hero-subtitle">Your personal space wellness companion</p>
+        </div>
+        <div class="hero-orb">
+            <div class="orb-rings"></div>
+            <div class="orb-core"></div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="features-section">
+        <h2 class="section-title">Explore Your Universe</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="card-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>AI Assistant</h3>
+                <p>Get personalized wellness support and mental health guidance from our AI companion.</p>
+                <a href="/assistant" class="card-link">Start Conversation</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="card-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3>Space Explorer</h3>
+                <p>Discover the wonders of our universe with interactive planet exploration and cosmic facts.</p>
+                <a href="/space" class="card-link">Explore Space</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="card-icon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <h3>Entertainment Hub</h3>
+                <p>Relax with music, meditation, journaling, and fun games in a cosmic environment.</p>
+                <a href="/entertainment" class="card-link">Enter Hub</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="card-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <h3>Wellness Reminders</h3>
+                <p>Stay on track with your wellness journey using personalized reminders and streaks.</p>
+                <a href="/reminders" class="card-link">Manage Reminders</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wellness Reminders Preview -->
+    <section class="reminders-preview">
+        <h2 class="section-title">Your Wellness Reminders</h2>
+        <div class="reminders-container">
+            <div id="reminders-list" class="reminders-list">
+                <div class="no-reminders">Loading reminders...</div>
+            </div>
+            <div class="reminders-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="total-reminders">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="completed-today">0</div>
+                    <div class="stat-label">Completed Today</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="current-streak">0</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+.cosmic-container {
+    padding: 0;
+    min-height: 100vh;
+}
+
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 70vh;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+    z-index: 2;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(123, 104, 238, 0.8);
+    line-height: 1.1;
+}
+
+.hero-title span:first-child {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #cdd9ff;
+}
+
+#orbitwell-title {
+    background: linear-gradient(45deg, #7b68ee, #ff6b9d, #4ecdc4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#orbitwell-title:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 30px rgba(123, 104, 238, 1);
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: #cdd9ff;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeInUp 1s ease 0.5s forwards;
+}
+
+.hero-orb {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    z-index: 1;
+}
+
+.orb-core {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(123, 104, 238, 0.8), rgba(123, 104, 238, 0.2));
+    border-radius: 50%;
+    animation: orbPulse 3s ease-in-out infinite;
+}
+
+.orb-rings {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 340px;
+    height: 340px;
+    border: 2px solid rgba(123, 104, 238, 0.3);
+    border-radius: 50%;
+    animation: orbRotate 20s linear infinite;
+}
+
+.orb-rings::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 360px;
+    height: 360px;
+    border: 1px solid rgba(123, 104, 238, 0.2);
+    border-radius: 50%;
+    animation: orbRotate 15s linear infinite reverse;
+}
+
+.features-section {
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 3rem;
+    text-shadow: 0 0 20px rgba(123, 104, 238, 0.5);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(123, 104, 238, 0.5);
+    box-shadow: 0 20px 40px rgba(123, 104, 238, 0.3);
+}
+
+.card-icon {
+    font-size: 3rem;
+    color: #7b68ee;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 15px rgba(123, 104, 238, 0.6);
+}
+
+.feature-card h3 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.feature-card p {
+    color: #cdd9ff;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.card-link {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(45deg, #7b68ee, #ff6b9d);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(123, 104, 238, 0.4);
+}
+
+.card-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(123, 104, 238, 0.6);
+}
+
+.reminders-preview {
+    padding: 4rem 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 20px;
+    margin: 2rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.reminders-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.reminders-list {
+    margin-bottom: 2rem;
+}
+
+.reminders-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 2rem;
+    text-align: center;
+}
+
+.stat-item {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #7b68ee;
+    text-shadow: 0 0 15px rgba(123, 104, 238, 0.5);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #cdd9ff;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes orbPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+@keyframes orbRotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1rem;
+        min-height: 60vh;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-orb {
+        width: 200px;
+        height: 200px;
+        margin-top: 2rem;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .reminders-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+}
+</style>
+
+<script>
+async function loadReminderStats() {
+    try {
+        const response = await fetch("/reminder-stats");
+        const stats = await response.json();
+        document.getElementById("total-reminders").textContent = stats.active; // Note: using active as total for display
+        document.getElementById("completed-today").textContent = stats.completed_today;
+        document.getElementById("current-streak").textContent = stats.streak;
+    } catch (e) {
+        console.log("Failed to load stats:", e);
+    }
+}
+
+// Page start animation
+document.addEventListener('DOMContentLoaded', function() {
+    // Add page start animation class
+    document.querySelector('.cosmic-container').classList.add('page-start-animate');
+
+    // Initialize reminders loading and stats
+    loadReminders();
+    loadReminderStats();
+
+    // OrbitWell title click to refresh
+    document.getElementById('orbitwell-title').addEventListener('click', function() {
+        location.reload();
+    });
+});
+
+// Load reminders preview from localStorage
+function loadReminders() {
+    try {
+        // Get reminders from localStorage (same system as reminders page)
+        const reminders = getRemindersFromStorage();
+        displayRemindersPreview(reminders);
+    } catch (error) {
+        console.error('Error loading reminders:', error);
+        document.getElementById('reminders-list').innerHTML = '<div class="no-reminders">Unable to load reminders</div>';
+    }
+}
+
+// Get reminders from localStorage
+function getRemindersFromStorage() {
+    try {
+        const stored = localStorage.getItem('orbitwell_reminders');
+        if (!stored) {
+            return [];
+        }
+        const reminders = JSON.parse(stored);
+        return Array.isArray(reminders) ? reminders : [];
+    } catch (error) {
+        console.error('Error parsing reminders from localStorage:', error);
+        return [];
+    }
+}
+
+function displayRemindersPreview(reminders) {
+    const container = document.getElementById('reminders-list');
+
+    if (!reminders || reminders.length === 0) {
+        container.innerHTML = '<div class="no-reminders">No reminders yet. Create your first one!</div>';
+        updateStats(0, 0, 0);
+        return;
+    }
+
+    // Show only active reminders (not completed and future/current date/time)
+    const now = new Date();
+    const activeReminders = reminders.filter(reminder => {
+        if (reminder.completed) return false;
+        const reminderDate = new Date(reminder.datetime);
+        return reminderDate >= now;
+    });
+
+    if (activeReminders.length === 0) {
+        container.innerHTML = '<div class="no-reminders">All caught up! No active reminders.</div>';
+    } else {
+        container.innerHTML = '';
+        activeReminders.slice(0, 3).forEach(reminder => {
+            const reminderElement = createReminderPreviewElement(reminder);
+            container.appendChild(reminderElement);
+        });
+
+        if (activeReminders.length > 3) {
+            const moreElement = document.createElement('div');
+            moreElement.className = 'reminder-preview-more';
+            moreElement.textContent = `+${activeReminders.length - 3} more reminders`;
+            container.appendChild(moreElement);
+        }
+    }
+
+    // Calculate stats
+    const totalReminders = reminders.length;
+    const completedToday = reminders.filter(reminder => {
+        if (!reminder.completed || !reminder.completed_at) return false;
+        const completedDate = new Date(reminder.completed_at);
+        const today = new Date();
+        return completedDate.toDateString() === today.toDateString();
+    }).length;
+
+    // Calculate streak (simplified - in a real app this would be more complex)
+    const currentStreak = calculateStreak(reminders);
+
+    updateStats(totalReminders, completedToday, currentStreak);
+}
+
+function createReminderPreviewElement(reminder) {
+    const div = document.createElement('div');
+    div.className = 'reminder-preview-item';
+
+    const date = new Date(reminder.datetime);
+    const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    div.innerHTML = `
+        <div class="reminder-preview-content">
+            <h4>${escapeHtml(reminder.title)}</h4>
+            <p>${formattedDate}</p>
+        </div>
+    `;
+
+    return div;
+}
+
+function calculateStreak(reminders) {
+    // Simplified streak calculation - count consecutive days with completions
+    let streak = 0;
+    const today = new Date();
+
+    for (let i = 0; i < 30; i++) {
+        const checkDate = new Date(today);
+        checkDate.setDate(today.getDate() - i);
+
+        const hasCompletion = reminders.some(reminder => {
+            if (!reminder.completed || !reminder.completed_at) return false;
+            const completedDate = new Date(reminder.completed_at);
+            return completedDate.toDateString() === checkDate.toDateString();
+        });
+
+        if (hasCompletion) {
+            streak++;
+        } else if (i === 0) {
+            // If no completion today, streak is 0
+            streak = 0;
+            break;
+        } else {
+            // Gap in streak
+            break;
+        }
+    }
+
+    return streak;
+}
+
+function updateStats(total, completedToday, streak) {
+    document.getElementById('total-reminders').textContent = total;
+    document.getElementById('completed-today').textContent = completedToday;
+    document.getElementById('current-streak').textContent = streak;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+</script>
+{% endblock %}
